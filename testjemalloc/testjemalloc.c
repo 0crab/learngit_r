@@ -13,7 +13,7 @@ char *p[THREAD_NUM][TEST_NUM];
 
 unsigned long getRunTime(struct timeval begTime) {
     struct timeval endTime;
-    mingw_gettimeofday(&endTime, NULL);
+    gettimeofday(&endTime, NULL);
     unsigned long duration = (endTime.tv_sec - begTime.tv_sec) * 1000000 + endTime.tv_usec - begTime.tv_usec;
     begTime = endTime;
     return duration;
@@ -30,7 +30,7 @@ void do_malloc(int i){
 int main(){
     pthread_t pt[THREAD_NUM];
     int ret;
-    mingw_gettimeofday(&startTime,NULL);
+    gettimeofday(&startTime,NULL);
     for(int i=0;i<THREAD_NUM;i++){
         if(pthread_create(&pt[i],NULL,(void *)&do_malloc,i)!=0){
             printf("create thread fail\n");
@@ -45,5 +45,6 @@ int main(){
         }
     }
     runTime=getRunTime(startTime);
+    malloc_stats_print(NULL,NULL,NULL);
     printf("finished in %lu\n",runTime);
 }
